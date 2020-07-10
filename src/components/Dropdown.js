@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const Dropdown = ({ options, selected, onSelectedChange }) => {
+const Dropdown = ({ options, selected, onSelectedChange, label }) => {
    const [open, setOpen] = useState(false);
    const ref = useRef();
 
@@ -52,7 +52,7 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
    return (
       <div className="ui form" ref={ref}>
          <div className="field">
-            <label className="label">Select A Color</label>
+            <label className="label">{label}</label>
             <div
                // conditionally apply css classes to show/hide dropdown
                className={`ui selection dropdown ${
