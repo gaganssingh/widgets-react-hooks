@@ -3,9 +3,12 @@ import axios from "axios";
 
 const Search = () => {
    const [term, setTerm] = useState("programming");
+
    const [debouncedTerm, setDebouncedTerm] = useState(term);
    const [results, setResults] = useState([]);
 
+   // Use setDebouncedTerm to set the value of debouncedTerm
+   // equal to that of the user entered search term
    useEffect(() => {
       const timerId = setTimeout(() => {
          setDebouncedTerm(term);
@@ -16,6 +19,8 @@ const Search = () => {
       };
    }, [term]);
 
+   // Use the debouncedTerm to perform the search
+   // on the wiki api
    useEffect(() => {
       // fetch request using axios using a helper function
       // as useEffect dowsn't allow using async await directly
