@@ -3,7 +3,18 @@ import axios from "axios";
 
 const Search = () => {
    const [term, setTerm] = useState("programming");
+   const [debouncedTerm, setDebouncedTerm] = useState(term);
    const [results, setResults] = useState([]);
+
+   useEffect(() => {
+      const timerId = setTimeout(() => {
+         setDebouncedTerm(term);
+      }, 1000);
+
+      return () => {
+         clearTimeout(timerId);
+      };
+   }, [term]);
 
    useEffect(() => {
       // fetch request using axios using a helper function
@@ -17,7 +28,7 @@ const Search = () => {
                   list: "search",
                   origin: "*",
                   format: "json",
-                  srsearch: term,
+                  srsearch: debouncedTerm,
                },
             }
          );
@@ -27,24 +38,29 @@ const Search = () => {
 
       // Automatically perform the search using the default
       //  search term, right when the user visits the page
-      if (term && !results.length) {
-         search();
-      } else {
-         // When user starts to type in search field,
-         // delay fetching data from wikipedia until
-         // after the user has stopped typing the search term
-         const timeoutId = setTimeout(() => {
-            // inoke the function to perform search
-            if (term) {
-               search();
-            }
-         }, 500);
+      search();
+   }, [debouncedTerm]);
 
-         return () => {
-            clearTimeout(timeoutId);
-         };
-      }
-   }, [term]);
+   // useEffect(() => {
+
+   //    if (term && !results.length) {
+   //       search();
+   //    } else {
+   //       // When user starts to type in search field,
+   //       // delay fetching data from wikipedia until
+   //       // after the user has stopped typing the search term
+   //       const timeoutId = setTimeout(() => {
+   //          // inoke the function to perform search
+   //          if (term) {
+   //             search();
+   //          }
+   //       }, 500);
+
+   //       return () => {
+   //          clearTimeout(timeoutId);
+   //       };
+   //    }
+   // }, [term, results.length]);
 
    const renderedResults = results.map((result) => {
       return (
